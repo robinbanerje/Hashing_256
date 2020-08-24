@@ -1,0 +1,74 @@
+# -*- coding: utf-8 -*-
+"""
+Created on Sat May 16 05:45:13 2020
+
+@author: ROBIN
+"""
+
+import random
+from datetime import datetime
+import hashlib
+
+#using library function
+#-----------------------------------------------------------------------------
+def sha256hashing(msg):
+    hashedString=hashlib.sha256(msg.encode('utf-8'))
+    hexDigest=hashedString.hexdigest()
+    return hexDigest
+#-----------------------------------------------------------------------------
+    
+#input
+print('enter input string')
+DataString=input()
+print("")
+print("")
+print("Enter the leading zeroes: ")
+leadingZerosStr=input()
+
+leadingZero=int(leadingZerosStr)
+print("")
+print("")
+
+wloop=True
+nonce=0
+random.seed(datetime.now())
+
+x=str(random.randint(1,2180591620717411303424))
+
+startTime=datetime.now()
+
+while(wloop):
+    nonce=nonce+1
+    
+    HashFound=True
+    
+    testHash=sha256Hashing(DataString + "-" + x + "-" + str(nonce))
+    print(testHash)
+    print(leadingZero)
+    
+    for i in range(0,leadingZero):
+        if(testHash[i] != "0"):
+            HashFound=False
+            break
+    
+    if(HashFound==True):
+        wloop=False
+        
+EndTime=datetime.now()
+
+print("")
+print("the proof of work : " + DataString + "-" + x)
+print("")
+print("Verified Hash for SHA256 :")
+print("")
+print(sha256Hashing(DataString + "-" + x + "-" +str(nonce)))
+print("")
+print("No. of attempts : "+ "{;,}".format(nonce))
+
+duration=EndTime - StartTime
+print("")
+print("")
+
+print("Time taken to find the nonce : ")
+print(duration)
+
